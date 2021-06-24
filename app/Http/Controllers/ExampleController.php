@@ -51,11 +51,8 @@ class ExampleController extends Controller
         $this->validate($request, [
             'roles' => 'required|array',
         ]);
-
         $roles = $request->input('roles');
-
         $request->user()->syncRoles($roles);
-
         return Response::success($roles, '角色更新成功');
     }
 

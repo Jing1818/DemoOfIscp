@@ -25,15 +25,9 @@ use Jiannei\Response\Laravel\Support\Facades\Response;
 */
 
 Route::get('/', function () {
-    return app()->version();
+
 });
 
-Route::get('author', function () {
-    $response = Http::withOptions(['timeout' => 3])->get('https://api.github.com/users/Jiannei');
-    $response->throw();
-
-    return Response::success($response->json());
-});
 
 // 测试路由
 Route::group(['prefix' => 'test'], function () {
@@ -41,7 +35,6 @@ Route::group(['prefix' => 'test'], function () {
     Route::get('logs', ['uses' => 'ExampleController@logs', 'middleware' => 'throttle:5,1']);
     Route::put('roles', 'ExampleController@syncRoles');
     Route::put('permissions', 'ExampleController@syncPermissions');
-
     Route::get('posts', 'PostsController@index');
 });
 

@@ -33,7 +33,6 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $users = $this->userService->handleSearchList($request);
-
         return Response::success($users);
     }
 

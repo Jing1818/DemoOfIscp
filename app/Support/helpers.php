@@ -1,10 +1,14 @@
 <?php
 
 /*
- * This file is part of the Jiannei/lumen-api-starter.
- *
- * (c) Jiannei <longjian.huang@foxmail.com>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * 辅助函数
  */
+if (!function_exists('sys_config')){
+    /**
+     * @param string $name
+     */
+    function sys_config(string $name,$defalut = ''){
+        if (empty($name)) return $defalut;
+        $sysConfig = app('sysConfig')->get();
+    }
+}

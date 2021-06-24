@@ -13,6 +13,8 @@ namespace App\Providers;
 
 use App\Observers\UserObserver;
 use App\Repositories\Models\User;
+use App\Services\SystemConfigService;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
     }
 
     /**
