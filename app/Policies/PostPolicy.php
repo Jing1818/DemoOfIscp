@@ -53,7 +53,7 @@ class PostPolicy
             return false;
         }
 
-        // admin overrides published status
+        // modules overrides published status
         if ($user->can(PermissionEnum::ROUTE_POSTS_VIEW()->name)) {
             return true;
         }

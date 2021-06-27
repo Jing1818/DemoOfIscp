@@ -84,6 +84,8 @@ $app->configure('repository');
 $app->configure('enum');
 $app->configure('permission');
 $app->configure('response');
+$app->configure('cors');
+$app->configure('captcha');
 
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);
 
@@ -105,15 +107,17 @@ $app->alias('cache', \Illuminate\Cache\CacheManager::class);
 $app->middleware([
     \Jiannei\Logger\Laravel\Http\Middleware\RequestLog::class,
     \Jiannei\Response\Laravel\Http\Middleware\Etag::class,
-    \App\Http\Middleware\AcceptHeader::class
+    \App\Http\Middleware\AcceptHeader::class,
+//    \Barryvdh\Cors\HandleCors::class,
+    \App\Http\Middleware\AllowOrigin::class
 ]);
-
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'enum' => \Jiannei\Enum\Laravel\Http\Middleware\TransformEnums::class,
     'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
     'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
     'throttle' => \Jiannei\Response\Laravel\Http\Middleware\ThrottleRequests::class,
+//    'alloworigin' =>\App\Http\Middleware\AllowOrigin::class
 ]);
 
 /*
@@ -148,7 +152,8 @@ $app->register(\Jiannei\Logger\Laravel\Providers\ServiceProvider::class);
  * Custom Service Providers.
  */
 $app->register(App\Providers\RepositoryServiceProvider::class);
-
+$app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+//$app->register(\Barryvdh\Cors\HandleCors::class); //跨域
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -159,10 +164,20 @@ $app->register(App\Providers\RepositoryServiceProvider::class);
 | can respond to, as well as the controllers that may handle them.
 |
 */
-
+/**
+ * 后台路由加载
+ */
+$app->router->group([
+    'namespace' => 'App\Admin\Controllers',
+], function ($router) {
+    require __DIR__.'/../routes/admin.php';
+});
+/**
+ * 前台路由加载
+ */
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__.'/../routes/api.php';
 });
 return $app;
